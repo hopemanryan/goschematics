@@ -1,12 +1,20 @@
 package argumentsservice
 
 import (
+	"encoding/json"
 	"flag"
 )
 
 // struct to hold command line arguments
 type FileReplacementArguments struct {
-	file_name string
+	FileName string `json:"file_name"`
+}
+
+func (fr FileReplacementArguments) GetArgumentsMap() map[string]interface{} {
+	var inInterface map[string]interface{}
+	inrec, _ := json.Marshal(fr)
+	json.Unmarshal(inrec, &inInterface)
+	return inInterface
 }
 
 // a function that  get command line variables
@@ -17,6 +25,8 @@ func GetArguments() FileReplacementArguments {
 
 	flag.Parse()
 
-	return FileReplacementArguments{fileName}
+	return FileReplacementArguments{
+		FileName: fileName,
+	}
 
 }
