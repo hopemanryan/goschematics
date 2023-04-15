@@ -22,6 +22,7 @@ func main() {
 
 	for _, templateFile := range templateFiles {
 		replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
+
 	}
 
 }
