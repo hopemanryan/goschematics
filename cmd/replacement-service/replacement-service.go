@@ -3,12 +3,14 @@ package replacementservice
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 )
 
 func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileReplacementArguments) (newFileData string, error bool) {
+	lines := []string{}
 	arguments.GetArgumentsMap()
 	data, err := os.ReadFile(filePath)
 	if err != nil {
@@ -16,9 +18,13 @@ func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileR
 		return "", true
 	} else {
 
-		for i, line := range strings.Split(string(data), "\n") {
-			fmt.Println(i, line)
+		for _, line := range strings.Split(string(data), "\n") {
+			newLine := ReplaceLine(line, arguments)
+			lines = append(lines, newLine)
 		}
+
+		newFileData = strings.Join(lines, "\n")
+		fmt.Printf("new file data: %s \n", newFileData)
 
 	}
 
@@ -26,6 +32,25 @@ func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileR
 
 }
 
-func FindInContent(text string) {
+// write a function that checks if a string has a regex of anything between <% and =%> and replace it with the value of the argument
+func ReplaceLine(line string, arguments *argumentsservice.FileReplacementArguments) string {
+	replaceableRegex := regexp.MustCompile(`(?m)<%.*=%>`)
 
+	// if the line has a regex match
+	if replaceableRegex.MatchString(line) {
+
+		// regex of group between <% and =%>
+		regex := regexp.MustCompile(`(?m)<%(.*)=%>`)
+		// get the group
+		group := regex.FindStringSubmatch(line)[1]
+		// get the value of the argument
+		argValue := arguments.GetArgumentValue(group)
+
+		newLine := replaceableRegex.ReplaceAllString(line, argValue)
+
+		return newLine
+
+	} else {
+		return line
+	}
 }
