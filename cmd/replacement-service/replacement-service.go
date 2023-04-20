@@ -12,6 +12,7 @@ import (
 func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileReplacementArguments) (newFileData string, error bool) {
 	lines := []string{}
 	arguments.GetArgumentsMap()
+	var newFile = ""
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Println(err)
@@ -23,12 +24,11 @@ func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileR
 			lines = append(lines, newLine)
 		}
 
-		newFileData = strings.Join(lines, "\n")
-		fmt.Printf("new file data: %s \n", newFileData)
+		newFile = strings.Join(lines, "\n")
 
 	}
 
-	return "", false
+	return newFile, false
 
 }
 

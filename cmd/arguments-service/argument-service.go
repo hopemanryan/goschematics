@@ -3,7 +3,6 @@ package argumentsservice
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
 	"strings"
 )
 
@@ -24,7 +23,6 @@ func GetArguments() FileReplacementArguments {
 	var fileName string
 	flag.StringVar(&fileName, "f", "", "file name name to replace (short hand)")
 	flag.StringVar(&fileName, "file_name", "", "file name name to replace")
-
 	flag.Parse()
 
 	return FileReplacementArguments{
@@ -33,7 +31,6 @@ func GetArguments() FileReplacementArguments {
 
 }
 func (fr FileReplacementArguments) GetArgumentValue(argumentName string) string {
-	fmt.Printf("argument: %s \n", argumentName)
 	argumentsMap := fr.GetArgumentsMap()
 	return argumentsMap[strings.TrimSpace(argumentName)]
 

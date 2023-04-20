@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 	directoryservice "github.com/hopemanryan/goschematics/cmd/directory-service"
 	replacementservice "github.com/hopemanryan/goschematics/cmd/replacement-service"
@@ -21,7 +23,8 @@ func main() {
 	arguments := argumentsservice.GetArguments()
 
 	for _, templateFile := range templateFiles {
-		replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
+		file, _ := replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
+		fmt.Printf("file: %s \n", file)
 
 	}
 
