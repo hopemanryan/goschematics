@@ -1,0 +1,3 @@
+{
+    "toUpperCase": "(val) => val.toUpperCase()"
+}

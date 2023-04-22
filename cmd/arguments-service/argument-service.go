@@ -9,6 +9,8 @@ import (
 // struct to hold command line arguments
 type FileReplacementArguments struct {
 	FileName string `json:"file_name"`
+	ReadDir  string `json:"read_dir"`
+	OutDir   string `json:"out_dir"`
 }
 
 func (fr FileReplacementArguments) GetArgumentsMap() map[string]string {
@@ -21,12 +23,18 @@ func (fr FileReplacementArguments) GetArgumentsMap() map[string]string {
 // a function that  get command line variables
 func GetArguments() FileReplacementArguments {
 	var fileName string
-	flag.StringVar(&fileName, "f", "", "file name name to replace (short hand)")
+	var readDir string
+	var outDir string
 	flag.StringVar(&fileName, "file_name", "", "file name name to replace")
+	flag.StringVar(&readDir, "read_dir", "", "directory to read files from")
+	flag.StringVar(&outDir, "out_dir", "", "directory to write files to")
+
 	flag.Parse()
 
 	return FileReplacementArguments{
 		FileName: fileName,
+		ReadDir:  readDir,
+		OutDir:   outDir,
 	}
 
 }

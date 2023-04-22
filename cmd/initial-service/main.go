@@ -9,23 +9,21 @@ import (
 )
 
 /*
-	1. read arguments
-	2. get fileName from arguemnts
-	3. read file from directory located in by suffix
-	4. find places where pattern exits
-	5. replace pattern with new value
-	6. write new file to directory
+1. save to a specific directory
+2. allow config and to run js functions from config
+3. allow dynamic file names
+
 */
 
 func main() {
-	currentDirectoy := directoryservice.GetCurrentDirectory()
-	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
 	arguments := argumentsservice.GetArguments()
+	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir)
+	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
 
 	for _, templateFile := range templateFiles {
 		file, _ := replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
-		directoryservice.SaveFileToDirectory(strings.Replace(templateFile, "__templ__", "", -1), file)
-
+		templateFileNameCleanName := strings.Replace(templateFile, "__templ__", "", -1)
+		directoryservice.SaveFileToDirectory(templateFileNameCleanName, file)
 	}
 
 }
