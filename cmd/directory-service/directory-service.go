@@ -35,3 +35,14 @@ func FindFilesInDirectory(path string) []string {
 	// read all files in directory
 
 }
+
+// function that savcs file to directory
+func SaveFileToDirectory(path string, file string) {
+	// save file to directory
+	byte := []byte(file)
+	err := os.WriteFile(path, byte, 0644)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+	}
+
+}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"strings"
 
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 	directoryservice "github.com/hopemanryan/goschematics/cmd/directory-service"
@@ -24,7 +24,7 @@ func main() {
 
 	for _, templateFile := range templateFiles {
 		file, _ := replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
-		fmt.Printf("file: %s \n", file)
+		directoryservice.SaveFileToDirectory(strings.Replace(templateFile, "__templ__", "", -1), file)
 
 	}
 
