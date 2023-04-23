@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
+	v8 "rogchap.com/v8go"
 )
 
 func ReplaceFileWithArguments(filePath string, arguments *argumentsservice.FileReplacementArguments) (newFileData string, error bool) {
@@ -47,10 +48,35 @@ func ReplaceLine(line string, arguments *argumentsservice.FileReplacementArgumen
 		argValue := arguments.GetArgumentValue(group)
 
 		newLine := replaceableRegex.ReplaceAllString(line, argValue)
+		RunJS()
 
 		return newLine
 
 	} else {
 		return line
 	}
+}
+
+func RunJS(function string) {
+
+	configRaw, _ := os.ReadFile("goschematics.js")
+	script := string(configRaw)
+
+	iso := v8.NewIsolate()
+	ctx := v8.NewContext(iso)
+
+	_, err := ctx.RunScript(script, "goschematics.js")
+	if err != nil {
+		e := err.(*v8.JSError)    // JavaScript errors will be returned as the JSError struct
+		fmt.Println(e.Message)    // the message of the exception thrown
+		fmt.Println(e.Location)   // the filename, line number and the column where the error occured
+		fmt.Println(e.StackTrace) // the full stack trace of the error, if available
+
+		fmt.Printf("javascript error: %v", e)        // will format the standard error message
+		fmt.Printf("javascript stack trace: %+v", e) // will format the full error stack trace
+	}
+
+	val, _ := ctx.RunScript(function, "goschematics.js")
+	fmt.Println(val.String())
+
 }

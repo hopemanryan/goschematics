@@ -11,6 +11,7 @@ import (
 func GetCurrentDirectory(readDir string) string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	dir = dir + "/" + readDir
+
 	if err != nil {
 		log.Fatal(err)
 	}
