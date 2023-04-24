@@ -1,3 +1,3 @@
-const demo1Component = () => {
+const DEMO1Component = () => {
 
 }

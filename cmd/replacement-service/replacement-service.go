@@ -44,20 +44,38 @@ func ReplaceLine(line string, arguments *argumentsservice.FileReplacementArgumen
 		regex := regexp.MustCompile(`(?m)<%(.*)=%>`)
 		// get the group
 		group := regex.FindStringSubmatch(line)[1]
+		fmt.Println(group)
+
+		if strings.Contains(group, "(") && strings.Contains(group, ")") {
+			fmt.Println("has function")
+			insiteParenthesis := regexp.MustCompile(`(?m)\((.*)\)`)
+			innerValue := insiteParenthesis.FindStringSubmatch(group)[1]
+			argValue := arguments.GetArgumentValue(innerValue)
+			replaceValue := fmt.Sprintf("'%s'", argValue)
+			function := strings.Replace(group, "("+innerValue+")", "("+replaceValue+")", -1)
+			fmt.Printf("function: %s", function)
+			funcResult := RunJS(function)
+			fmt.Printf("funcResult: %s", funcResult)
+			newLine := replaceableRegex.ReplaceAllString(line, funcResult)
+			return newLine
+
+		} else {
+			fmt.Println("no function")
+
+			argValue := arguments.GetArgumentValue(group)
+
+			newLine := replaceableRegex.ReplaceAllString(line, argValue)
+
+			return newLine
+		}
 		// get the value of the argument
-		argValue := arguments.GetArgumentValue(group)
-
-		newLine := replaceableRegex.ReplaceAllString(line, argValue)
-		RunJS()
-
-		return newLine
 
 	} else {
 		return line
 	}
 }
 
-func RunJS(function string) {
+func RunJS(function string) string {
 
 	configRaw, _ := os.ReadFile("goschematics.js")
 	script := string(configRaw)
@@ -72,11 +90,21 @@ func RunJS(function string) {
 		fmt.Println(e.Location)   // the filename, line number and the column where the error occured
 		fmt.Println(e.StackTrace) // the full stack trace of the error, if available
 
-		fmt.Printf("javascript error: %v", e)        // will format the standard error message
-		fmt.Printf("javascript stack trace: %+v", e) // will format the full error stack trace
+		fmt.Printf("javascript error: %v", e) // will format the standard error message
+		fmt.Printf("javascript stack trace: %+v", e)
+		panic(e.Message) // will format the full error stack trace
 	}
 
-	val, _ := ctx.RunScript(function, "goschematics.js")
+	val, scriptErr := ctx.RunScript(function, "goschematics.js")
+	if scriptErr != nil {
+		e := scriptErr.(*v8.JSError) // JavaScript errors will be returned as the JSError struct
+		fmt.Println(e.Message)       // the message of the exception thrown
+		fmt.Println(e.Location)      // the filename, line number and the column where the error occured
+		fmt.Println(e.StackTrace)
+		panic(e.Message) // will format the full error stack trace
+
+	}
 	fmt.Println(val.String())
+	return val.String()
 
 }
