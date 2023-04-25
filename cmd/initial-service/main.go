@@ -5,6 +5,7 @@ import (
 
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 	directoryservice "github.com/hopemanryan/goschematics/cmd/directory-service"
+	jsservice "github.com/hopemanryan/goschematics/cmd/js-service"
 	replacementservice "github.com/hopemanryan/goschematics/cmd/replacement-service"
 )
 
@@ -20,9 +21,9 @@ func main() {
 	arguments := argumentsservice.GetArguments()
 	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir)
 	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
-
+	jsContent := jsservice.NewJSFunction()
 	for _, templateFile := range templateFiles {
-		file, _ := replacementservice.ReplaceFileWithArguments(templateFile, &arguments)
+		file, _ := replacementservice.ReplaceFileWithArguments(templateFile, &arguments, jsContent)
 		templateFileNameCleanName := strings.Replace(templateFile, "__templ__", "", -1)
 		directoryservice.SaveFileToDirectory(templateFileNameCleanName, file)
 	}
