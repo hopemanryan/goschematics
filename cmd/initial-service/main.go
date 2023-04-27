@@ -2,7 +2,7 @@ package main
 
 import (
 	"strings"
-	"fmt"
+
 	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 	directoryservice "github.com/hopemanryan/goschematics/cmd/directory-service"
 	jsservice "github.com/hopemanryan/goschematics/cmd/js-service"
@@ -15,11 +15,7 @@ import (
 
 func main() {
 	arguments := argumentsservice.GetArguments()
-	if(arguments.Help) {
-		
-		fmt.printf("Help is on its way")
-		return
-	}
+
 	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir)
 	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
 	jsContext := jsservice.NewJSFunction()
