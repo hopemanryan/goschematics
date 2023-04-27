@@ -10,7 +10,8 @@ import (
 type FileReplacementArguments struct {
 	FileName string `json:"file_name"`
 	ReadDir  string `json:"read_dir"`
-	OutDir   string `json:"out_dir"`
+	OutDir   string `json:"out_dir"`,
+	Help 	 string `json:"help"`
 }
 
 func (fr FileReplacementArguments) GetArgumentsMap() map[string]string {
@@ -25,9 +26,11 @@ func GetArguments() FileReplacementArguments {
 	var fileName string
 	var readDir string
 	var outDir string
+	var help string
 	flag.StringVar(&fileName, "file_name", "", "file name name to replace")
 	flag.StringVar(&readDir, "read_dir", "", "directory to read files from")
 	flag.StringVar(&outDir, "out_dir", "", "directory to write files to")
+	flag.StringVar(&help, "help", "", "Help")
 
 	flag.Parse()
 
@@ -35,6 +38,7 @@ func GetArguments() FileReplacementArguments {
 		FileName: fileName,
 		ReadDir:  readDir,
 		OutDir:   outDir,
+		Help:	  help
 	}
 
 }
