@@ -1,0 +1,13 @@
+{
+  "name": "gschema",
+
+  "version": "0.0.1",
+  "description": "Create generic schematics and run them with go, enjoy the speed of go and the flexibility of javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./index.js"
+  },
+  "keywords": ["schematics"],
+  "author": "Ryan Hoffman",
+  "license": "MIT"
+}

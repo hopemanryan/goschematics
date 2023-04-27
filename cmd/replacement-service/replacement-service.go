@@ -58,12 +58,8 @@ func ReplaceLine(line string, arguments *argumentsservice.FileReplacementArgumen
 			return newLineFunctionResultLine
 
 		} else {
-			fmt.Println("no function")
-
 			argValue := arguments.GetArgumentValue(group)
-
 			newLine := replaceableRegex.ReplaceAllString(line, argValue)
-
 			return newLine
 		}
 		// get the value of the argument
