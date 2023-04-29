@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-func GetCurrentDirectory(readDir string) string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	dir = dir + "/" + readDir
+func GetCurrentDirectory(readDir string, basePath string) string {
+
+	dir, err := filepath.Abs(basePath + "/" + readDir)
 
 	if err != nil {
 		log.Fatal(err)

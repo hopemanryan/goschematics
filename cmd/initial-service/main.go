@@ -10,13 +10,12 @@ import (
 )
 
 /*
-1. save to a specific directory
+1. use entry file of cwd as base for all other commands that are
 */
 
 func main() {
 	arguments := argumentsservice.GetArguments()
-
-	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir)
+	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir, arguments.Entry)
 	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
 	jsContext := jsservice.NewJSFunction()
 	for _, templateFile := range templateFiles {

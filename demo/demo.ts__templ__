@@ -1,3 +1,0 @@
-const <% toUpperCase(file_name) =%>Component = () => {
-
-}
