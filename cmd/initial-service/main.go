@@ -10,12 +10,13 @@ import (
 )
 
 /*
-1. use entry file of cwd as base for all other commands that are
+1.implement save to directory
+2. support generic config file
 */
 
 func main() {
 	arguments := argumentsservice.GetArguments()
-	currentDirectoy := directoryservice.GetCurrentDirectory(arguments.ReadDir, arguments.Entry)
+	currentDirectoy := directoryservice.GetWorkingDirectory(arguments)
 	templateFiles := directoryservice.FindFilesInDirectory(currentDirectoy)
 	jsContext := jsservice.NewJSFunction()
 	for _, templateFile := range templateFiles {
@@ -24,5 +25,4 @@ func main() {
 		templateFileNameCleanName := strings.Replace(cleanFileName, "__templ__", "", -1)
 		directoryservice.SaveFileToDirectory(templateFileNameCleanName, file)
 	}
-
 }

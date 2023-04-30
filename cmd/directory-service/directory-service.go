@@ -1,14 +1,17 @@
 package directoryservice
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	argumentsservice "github.com/hopemanryan/goschematics/cmd/arguments-service"
 )
 
-func GetCurrentDirectory(readDir string, basePath string) string {
+func GetCurrentDirectory(basePath string, readDir string) string {
 
 	dir, err := filepath.Abs(basePath + "/" + readDir)
 
@@ -38,6 +41,19 @@ func FindFilesInDirectory(path string) []string {
 
 }
 
+func ReadConfigFile(basePath string) map[string]interface{} {
+	configFileRaw, err := os.ReadFile(basePath + "/geoschematics.conig.json")
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		return nil
+	}
+
+	config := make(map[string]interface{})
+	json.Unmarshal(configFileRaw, &config)
+	return config
+
+}
+
 // function that savcs file to directory
 func SaveFileToDirectory(path string, file string) {
 	// save file to directory
@@ -45,6 +61,23 @@ func SaveFileToDirectory(path string, file string) {
 	err := os.WriteFile(path, byte, 0644)
 	if err != nil {
 		fmt.Println("ERROR:", err)
+	}
+
+}
+
+func GetConfigByShortHand(shorthand string, entryPath string) map[string]interface{} {
+	shortHandValue := ReadConfigFile(entryPath)["shorthands"]
+	shortHandConfig := shortHandValue.(map[string]interface{})[shorthand].(map[string]interface{})
+	return shortHandConfig
+
+}
+
+func GetWorkingDirectory(arguments argumentsservice.FileReplacementArguments) string {
+	if arguments.Shorthand != "" {
+		shorthandConfig := GetConfigByShortHand(arguments.Shorthand, arguments.Entry)
+		return GetCurrentDirectory(arguments.Entry, shorthandConfig["templatePath"].(string))
+	} else {
+		return GetCurrentDirectory(arguments.Entry, arguments.ReadDir)
 	}
 
 }

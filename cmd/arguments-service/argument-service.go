@@ -8,10 +8,11 @@ import (
 
 // struct to hold command line arguments
 type FileReplacementArguments struct {
-	FileName string `json:"file_name"`
-	ReadDir  string `json:"read_dir"`
-	OutDir   string `json:"out_dir"`
-	Entry    string `json:"entry"`
+	FileName  string `json:"file_name"`
+	ReadDir   string `json:"read_dir"`
+	OutDir    string `json:"out_dir"`
+	Shorthand string `json:"shorthand"`
+	Entry     string `json:"entry"`
 }
 
 func (fr FileReplacementArguments) GetArgumentsMap() map[string]string {
@@ -26,19 +27,23 @@ func GetArguments() FileReplacementArguments {
 	var fileName string
 	var readDir string
 	var outDir string
+	var shorthand string
 	var entryPoint string
 	flag.StringVar(&fileName, "file_name", "", "file name name to replace")
 	flag.StringVar(&readDir, "read_dir", "", "directory to read files from")
 	flag.StringVar(&outDir, "out_dir", "", "directory to write files to")
+	flag.StringVar(&shorthand, "shorthand", "", "Shorthand for predefind in configf file")
+	flag.StringVar(&shorthand, "s", "", "Shorthand for predefind in configf file")
 	flag.StringVar(&entryPoint, "_entrypoint", "", "directory to write files to")
 
 	flag.Parse()
 
 	return FileReplacementArguments{
-		FileName: fileName,
-		ReadDir:  readDir,
-		OutDir:   outDir,
-		Entry:    entryPoint,
+		FileName:  fileName,
+		ReadDir:   readDir,
+		OutDir:    outDir,
+		Entry:     entryPoint,
+		Shorthand: shorthand,
 	}
 
 }
