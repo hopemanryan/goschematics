@@ -20,9 +20,9 @@ func NewJSFunction() *JSContext {
 }
 
 func (js *JSContext) SetJSPreFunctions() {
-	configRaw, _ := os.ReadFile("goschematics.js")
+	configRaw, _ := os.ReadFile("gschema.js")
 	script := string(configRaw)
-	_, err := js.ctx.RunScript(script, "goschematics.js")
+	_, err := js.ctx.RunScript(script, "gschema.js")
 	if err != nil {
 		e := err.(*v8go.JSError)  // JavaScript errors will be returned as the JSError struct
 		fmt.Println(e.Message)    // the message of the exception thrown
@@ -37,7 +37,7 @@ func (js *JSContext) SetJSPreFunctions() {
 }
 
 func (js *JSContext) RunScript(functionScript string) string {
-	val, scriptErr := js.ctx.RunScript(functionScript, "goschematics.js")
+	val, scriptErr := js.ctx.RunScript(functionScript, "gschema.js")
 	if scriptErr != nil {
 		e := scriptErr.(*v8go.JSError) // JavaScript errors will be returned as the JSError struct
 		fmt.Println(e.Message)         // the message of the exception thrown

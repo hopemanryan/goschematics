@@ -42,7 +42,7 @@ func FindFilesInDirectory(path string) []string {
 }
 
 func ReadConfigFile(basePath string) map[string]interface{} {
-	configFileRaw, err := os.ReadFile(basePath + "/geoschematics.conig.json")
+	configFileRaw, err := os.ReadFile(basePath + "/gschema.config.json")
 	if err != nil {
 		fmt.Println("ERROR:", err)
 		return nil
