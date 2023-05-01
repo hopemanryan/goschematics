@@ -1,7 +1,4 @@
-
-# GSchema
-
-A schematics engine written in go inorder to innvovate the schematics niche and increase development speed.
+A schematics engine written in go in-order to innovate the schematics niche and increase development speed.
 
 ### Install
 `npm install -D hopemanryan/gschema`
@@ -12,7 +9,7 @@ A schematics engine written in go inorder to innvovate the schematics niche and 
 #### Templates 
 
  * Templates files must end with a  `__templ__` suffix 
- * The regex pattern for dynamic content is: `<% file_name =%>` (in the context file_name is a varialbe)
+ * The regex pattern for dynamic content is: `<% file_name =%>` (in the context file_name is a variable)
  * You can add dynamic variables to file names `<% file_name =%>Component.ts__templ__`
  * Javascript functions are supported (see more down bellow)
 
@@ -39,7 +36,7 @@ node ./node_modules/gschema/gschema.js -file_name=demo1 -read_dir=./abc
 
 ### JS functions 
 
-Schematics are mor popular in the Javascript community. There for we havee added support to add a JS file that will have functions which can be used in the template files 
+Schematics are more popular in the Javascript community. There for we have added support to add a JS file that will have functions which can be used in the template files 
 
 ```javascript
 // gschema.js
@@ -48,7 +45,7 @@ function toUpperCase (val) {
 }
 ```
 
-This will load the function and the engine sees toUpperCase it will run the function with varialbe value as the arguement  `toUpperCase('demo1')` and return the value `DEMO1`
+This will load the function and the engine sees toUpperCase it will run the function with variable value as the argument  `toUpperCase('demo1')` and return the value `DEMO1`
 
 
 ### Shorthands
@@ -67,4 +64,4 @@ This will load the function and the engine sees toUpperCase it will run the func
 ``` bash
 node ./node_modules/gschema/gschema -file_name=demo1 -s=demo
 ```
-The engine will use the predifined config, this allows true re-usability of templates
+The engine will use the predefined config, this allows true re-usability of templates
